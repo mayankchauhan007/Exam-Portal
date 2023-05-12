@@ -12,7 +12,7 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long qid;
 
-    private Long title;
+    private String title;
 
     private String description;
 
@@ -31,11 +31,29 @@ public class Quiz {
     private Set<Question> questions = new HashSet<>();
 
 
+    public String getTitle() {
+        return title;
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
+    public Category getCategory() {
+        return category;
+    }
 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
+    public Set<Question> getQuestions() {
+        return questions;
+    }
 
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
 
     public Quiz() {
     }
@@ -46,14 +64,6 @@ public class Quiz {
 
     public void setQid(Long qid) {
         this.qid = qid;
-    }
-
-    public Long getTitle() {
-        return title;
-    }
-
-    public void setTitle(Long title) {
-        this.title = title;
     }
 
     public String getDescription() {

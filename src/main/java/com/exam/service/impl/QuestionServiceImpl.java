@@ -47,6 +47,5 @@ public class QuestionServiceImpl implements QuestionService {
         Question question =new Question();
         question.setQuesId(questionId);
         this.questionRepository.delete(question);
-
     }
 }
