@@ -1,10 +1,14 @@
 package com.exam.controller;
 
+import com.exam.model.exam.Category;
 import com.exam.model.exam.Quiz;
+import com.exam.service.CategoryService;
 import com.exam.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -12,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class QuizController {
     @Autowired
     private QuizService quizService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @PostMapping("/")
     public ResponseEntity<Quiz> addQuiz(@RequestBody Quiz quiz){
@@ -45,4 +52,25 @@ public class QuizController {
     {
         this.quizService.deleteQuiz(qid);
     }
+
+    @GetMapping("/category/{cid}")
+    public List<Quiz> getQuizzesOfCategory(@PathVariable("cid") Long cid){
+        Category category = categoryService.getCategory(cid);
+        return this.quizService.getQuizzesOfCategory(category);
+    }
+
+    // get Active quizzes
+    @GetMapping("/active")
+    public List<Quiz> getActiveQuizzes(){
+        return this.quizService.getActiveQuizzes();
+    }
+
+    // get active quizzes of category
+    @GetMapping("category/active/{cid}")
+    public List<Quiz> getActiveQuizzesOfCategory(@PathVariable("cid") Long cid){
+        Category category = this.categoryService.getCategory(cid);
+        return this.quizService.getActiveQuizzesOfCategory(category);
+    }
+
+
 }
