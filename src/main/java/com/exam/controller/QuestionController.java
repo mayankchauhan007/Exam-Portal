@@ -64,11 +64,14 @@ public class QuestionController {
 
         Quiz quiz = this.quizService.getQuiz(qid);
         Set<Question> questions = quiz.getQuestions();
-        List list = new ArrayList(questions);
+        List<Question> list = new ArrayList(questions);
         if(list.size()>Integer.parseInt(quiz.getNumberOfQuestions()))
         {
             list.subList(0,Integer.parseInt(quiz.getNumberOfQuestions()+1));
         }
+        list.forEach((q)->{
+            q.setAnswer("");
+        });
         Collections.shuffle(list);
         return ResponseEntity.ok(list);
 
@@ -85,5 +88,32 @@ public class QuestionController {
     public void deleteQuestion(@PathVariable("quesId") Long quesId)
     {
         this.questionService.deleteQuestion(quesId);
+    }
+
+    // eval quiz
+    @PostMapping("/eval-quiz")
+    public ResponseEntity<?> evalQuiz(@RequestBody List<Question> questions)
+    {
+        System.out.println(questions);
+        Double marksGot =0D;
+        Integer correctAnswers =0;
+        Integer attempted =0;
+        for (Question q:questions)
+        {
+            Question question = this.questionService.get(q.getQuesId());
+            if (question.getAnswer().equals(q.getGivenAnswer()))
+            {
+                correctAnswers++;
+                double marksSingle = Double.parseDouble(questions.get(0).getQuiz().getMaxMarks())/questions.size();
+                marksGot+=marksSingle;
+            }
+            if (q.getGivenAnswer()!=null){
+                attempted++;
+            }
+
+
+        };
+        Map<Object,Object> map = Map.of("marksGot",marksGot,"correctAnswers",correctAnswers,"attempted", attempted);
+        return ResponseEntity.ok( map);
     }
 }

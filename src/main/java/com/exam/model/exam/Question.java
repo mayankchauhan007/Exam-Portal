@@ -1,5 +1,7 @@
 package com.exam.model.exam;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
@@ -21,8 +23,19 @@ public class Question {
     private String option4;
 
     private String answer;
+    @Transient
+    private String givenAnswer;
+
 
     public Question() {
+    }
+
+    public String getGivenAnswer() {
+        return givenAnswer;
+    }
+
+    public void setGivenAnswer(String givenAnswer) {
+        this.givenAnswer = givenAnswer;
     }
 
     public Quiz getQuiz() {
@@ -88,6 +101,7 @@ public class Question {
     public void setOption4(String option4) {
         this.option4 = option4;
     }
+
 
     public String getAnswer() {
         return answer;
